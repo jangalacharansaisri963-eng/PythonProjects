@@ -1,5 +1,5 @@
 print("Hello from Python!")
 
-name = input("Enter your name: ")
+name = "Admin"
 
 print("Welcome " + name)
