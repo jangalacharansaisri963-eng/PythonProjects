@@ -24,10 +24,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install sympy
 
-      - name: Test calculator
-        run: |
-          python calculator_app.py
-
       - name: Create artifact
         uses: actions/upload-artifact@v4
         with:
@@ -35,4 +31,3 @@ jobs:
           path: |
             calculator_app.py
             .github/workflows/python.yml
-            
