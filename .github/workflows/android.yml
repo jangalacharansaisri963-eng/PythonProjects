@@ -4,38 +4,44 @@ on:
   push:
   workflow_dispatch:
 
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Android
+        uses: android-actions/setup-android@v3
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
-            python3-pip \
-            git \
-            zip \
-            unzip \
-            openjdk-17-jdk
-
+          sudo apt install -y python3-pip git zip unzip openjdk-17-jdk
 
       - name: Install Buildozer
         run: |
           pip install --user buildozer cython
 
+      - name: Clean Buildozer Cache
+        run: |
+          rm -rf .buildozer
+
+      - name: Accept Android Licenses
+        run: |
+          yes | sdkmanager --licenses
+
+      - name: Install Android SDK Packages
+        run: |
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
       - name: Build APK
         run: |
-          yes | buildozer android debug
-
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
