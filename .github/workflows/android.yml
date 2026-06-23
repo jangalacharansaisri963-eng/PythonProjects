@@ -15,6 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
 
+      - name: Setup Android
+        uses: android-actions/setup-android@v3
+
+
       - name: Install dependencies
         run: |
           sudo apt update
@@ -26,18 +30,14 @@ jobs:
           pip install --user buildozer cython
 
 
-      - name: First Buildozer setup
+      - name: Accept licenses
         run: |
-          buildozer android debug || true
+          yes | sdkmanager --licenses
 
 
-      - name: Accept Buildozer Android licenses
+      - name: Install Android tools
         run: |
-          SDK="$HOME/.buildozer/android/platform/android-sdk"
-
-          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses || true
-
-          "$SDK/cmdline-tools/latest/bin/sdkmanager" \
+          sdkmanager \
           "platform-tools" \
           "platforms;android-35" \
           "build-tools;35.0.0"
