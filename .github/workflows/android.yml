@@ -4,6 +4,7 @@ on:
   push:
   workflow_dispatch:
 
+
 jobs:
   build:
 
@@ -11,14 +12,19 @@ jobs:
 
     steps:
 
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
 
-      - name: Install dependencies
+      - name: Install Java and tools
         run: |
           sudo apt update
-          sudo apt install -y python3-pip git zip unzip openjdk-17-jdk
+          sudo apt install -y \
+            python3-pip \
+            git \
+            zip \
+            unzip \
+            openjdk-17-jdk
 
 
       - name: Install Buildozer
@@ -26,14 +32,19 @@ jobs:
           pip install --user buildozer cython
 
 
-      - name: Buildozer prepare
+      - name: Prepare Android SDK licenses
         run: |
-          buildozer android debug || true
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          yes | sdkmanager --licenses || true
 
 
-      - name: Accept Buildozer SDK licenses
+      - name: Install Android SDK packages
         run: |
-          yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
 
       - name: Build APK
