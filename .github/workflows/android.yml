@@ -29,10 +29,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y \
+            openjdk-17-jdk \
             git \
             zip \
-            unzip \
-            openjdk-17-jdk
+            unzip
 
 
       - name: Accept Android licenses
@@ -40,24 +40,31 @@ jobs:
           yes | sdkmanager --licenses
 
 
-      - name: Install Android 37 tools
+      - name: Install Android SDK 35
         run: |
           sdkmanager \
             "platform-tools" \
             "platforms;android-35" \
-            "build-tools;37.0.0"
+            "build-tools;35.0.0"
 
 
       - name: Install Buildozer
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install buildozer==1.5.0
           pip install cython==0.29.36
 
 
-      - name: Clear Buildozer cache
+      - name: Set Android paths
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> $GITHUB_ENV
+
+
+      - name: Clean Buildozer cache
         run: |
           rm -rf .buildozer
+          rm -rf ~/.buildozer
 
 
       - name: Build APK
