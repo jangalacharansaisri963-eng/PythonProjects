@@ -4,7 +4,6 @@ on:
   push:
   workflow_dispatch:
 
-
 jobs:
   build:
 
@@ -12,15 +11,11 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-
-      - name: Install Java and dependencies
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y python3-pip git zip unzip openjdk-17-jdk
@@ -31,17 +26,21 @@ jobs:
           pip install --user buildozer cython
 
 
-      - name: Accept Android SDK licenses
+      - name: First Buildozer setup
         run: |
-          yes | sdkmanager --licenses
+          buildozer android debug || true
 
 
-      - name: Install Android packages
+      - name: Accept Buildozer Android licenses
         run: |
-          sdkmanager \
-            "platform-tools" \
-            "platforms;android-35" \
-            "build-tools;35.0.0"
+          SDK="$HOME/.buildozer/android/platform/android-sdk"
+
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+          "$SDK/cmdline-tools/latest/bin/sdkmanager" \
+          "platform-tools" \
+          "platforms;android-35" \
+          "build-tools;35.0.0"
 
 
       - name: Build APK
@@ -52,5 +51,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: advanced-calculator-apk
+          name: calculator-apk
           path: bin/*.apk
