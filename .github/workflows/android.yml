@@ -11,7 +11,7 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
 
@@ -26,14 +26,14 @@ jobs:
           pip install --user buildozer cython
 
 
-      - name: Accept Android SDK licenses
+      - name: Buildozer prepare
         run: |
-          yes | sdkmanager --licenses || true
+          buildozer android debug || true
 
 
-      - name: Install Android Build Tools
+      - name: Accept Buildozer SDK licenses
         run: |
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" || true
+          yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
 
       - name: Build APK
