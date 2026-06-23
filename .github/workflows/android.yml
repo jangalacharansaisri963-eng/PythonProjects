@@ -9,53 +9,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout
         uses: actions/checkout@v4
 
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+
       - name: Setup Android
         uses: android-actions/setup-android@v3
+
 
       - name: Install system dependencies
         run: |
           sudo apt update
           sudo apt install -y \
-            python3-pip \
-            python3-setuptools \
-            python3-wheel \
             git \
             zip \
             unzip \
             openjdk-17-jdk
 
-      - name: Setup Android SDK
+
+      - name: Accept Android licenses
         run: |
           yes | sdkmanager --licenses
 
+
+      - name: Install Android SDK packages
+        run: |
           sdkmanager \
             "platform-tools" \
             "platforms;android-35" \
             "build-tools;35.0.0" \
             "cmdline-tools;latest"
 
+
       - name: Install Buildozer
         run: |
-          pip install --user --upgrade pip
-          pip install --user buildozer cython==0.29.36
+          python -m pip install --upgrade pip
+          pip install buildozer
+          pip install cython==0.29.36
 
-      - name: Configure Buildozer
-        run: |
-          mkdir -p ~/.buildozer
-          echo "export ANDROID_HOME=$ANDROID_HOME" >> ~/.bashrc
-          echo "export PATH=$PATH:$ANDROID_HOME/build-tools/35.0.0" >> ~/.bashrc
 
-      - name: Clean old cache
+      - name: Clean old Buildozer files
         run: |
           rm -rf .buildozer
 
+
       - name: Build APK
         run: |
-          buildozer android clean
           buildozer android debug
+
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
