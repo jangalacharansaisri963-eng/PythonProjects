@@ -6,13 +6,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Modern, secure way to grab the date for the cache key
       - name: Get Date
         id: get-date
         run: |
@@ -22,7 +21,7 @@ jobs:
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
         with:
-          path: .buildozer_global
+          path: ~/.buildozer
           key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
       - name: Cache Buildozer local directory
@@ -31,17 +30,28 @@ jobs:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          command: buildozer android debug
-          buildozer_version: master
+          python-version: '3.10'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libncurses5 libstdc++6 openjdk-17-jdk unzip zlib1g-dev libffi-dev libssl-dev Scale
+
+      - name: Install Buildozer and Cython
+        run: |
+          pip install --upgrade pip
+          pip install "cython<3.0.0" buildozer
+
+      - name: Build with Buildozer Direct Engine
+        run: buildozer android debug
 
       - name: Upload Downloadable Python APK
         uses: actions/upload-artifact@v4
         with:
           name: CryptographicVault-Python-APK
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
           retention-days: 7
           
