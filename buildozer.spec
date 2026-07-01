@@ -1,42 +1,20 @@
 [app]
-
-title = Advanced Calculator
-
-package.name = advancedcalculator
-
+title = Cryptographic Vault
+package.name = cryptovault
 package.domain = org.example
-
-
 source.dir = .
-
-source.include_exts = py,png,jpg,kv,json
-
-
+source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
-
-
-requirements = python3,kivy,sympy==1.13.1
-
-
+requirements = python3,kivy==2.3.0,pillow
 orientation = portrait
-
-fullscreen = 0
-
-
-android.api = 35
-
-android.minapi = 23
-
-android.build_tools_version = 35.0.0
-
-android.ndk = 25c
-
-
-android.archs = arm64-v8a,armeabi-v7a
-
+fullscreen = 1
+android.archs = arm64-v8a
+android.api = 33
+android.minapi = 21
+android.sdk = 33
+android.ndk = 25b
+android.accept_sdk_license = True
 
 [buildozer]
-
-log_level = 3
-
+log_level = 2
 warn_on_root = 1
