@@ -2,7 +2,7 @@ import math
 
 def calculator():
     print("--- Professional Calculator ---")
-    print("Features: +, -, *, /, sqrt(x), pi(n), pi, pow(x, y), percent(x, y), sin(x), cos(x), tan(x), radians(x), degrees(x)")
+    print("Features: +, -, *, /, sqrt(x), cbrt(x), pi(n), pi, pow(x, y), percent(x, y), sin(x), cos(x), tan(x), radians(x), degrees(x)")
     print("Type 'exit' or 'quit' to close.")
     
     # Custom helper for percentage calculations
@@ -32,6 +32,7 @@ def calculator():
     # The namespace dictionary mapping string inputs to safe math entities
     safe_dict = {
         "sqrt": math.sqrt,
+        "cbrt": math.cbrt,      # <-- Added cube root support here!
         "pi": pi_precision,     # Used when called as a function: pi(5)
         "pow": math.pow,      
         "percent": percent,    
