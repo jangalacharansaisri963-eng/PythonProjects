@@ -1,10 +1,19 @@
 import math
+import os
+import re
+
+def clear_screen():
+    """Clears the terminal screen for Windows or Linux/Android."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def calculator():
     print("--- Professional Calculator ---")
     print("Features: +, -, *, /, sqrt(x), cbrt(x), pi(n), pi, pow(x, y), percent(x, y), sin(x), cos(x), tan(x), radians(x), degrees(x)")
-    print("Type 'exit' or 'quit' to close.")
+    print("Commands: 'ans' (last result), 'clear' (wipe screen), 'exit' (close)")
     
+    # Initialize the Ans memory buffer tracker
+    ans_value = 0
+
     # Custom helper for percentage calculations
     def percent(x, y):
         return (x / 100) * y
@@ -32,8 +41,8 @@ def calculator():
     # The namespace dictionary mapping string inputs to safe math entities
     safe_dict = {
         "sqrt": math.sqrt,
-        "cbrt": math.cbrt,      # <-- Added cube root support here!
-        "pi": pi_precision,     # Used when called as a function: pi(5)
+        "cbrt": math.cbrt,      
+        "pi": pi_precision,     
         "pow": math.pow,      
         "percent": percent,    
         "sin": smart_sin,      
@@ -56,12 +65,30 @@ def calculator():
             if not expr:
                 continue
 
-            # Special Case: If user types just 'pi' without brackets, return raw 30-digit float representation
-            if expr == "pi":
-                print(f"= {format(math.pi, '.30f')}")
+            # Handle screen clear command
+            if expr in ["clear", "cls"]:
+                clear_screen()
                 continue
 
-            # Build a local dictionary where 'pi' as a word acts as a constant value for equations like '2 * pi'
+            # --- BUFF 1: Replace 'ans' with the actual stored memory value ---
+            expr = re.sub(r'\bans\b', str(ans_value), expr)
+
+            # Special Case: If user types just 'pi' without brackets, return raw representation
+            if expr == "pi":
+                result = math.pi
+                print(f"= {format(result, '.30f')}")
+                ans_value = result  # Update ans even for raw pi calls
+                continue
+
+            # --- BUFF 2: Smart Implicit Multiplication Injector ---
+            # Fixes number touching open bracket: 2(3) -> 2*(3)
+            expr = re.sub(r'(\d)\(', r'\1*(', expr)
+            # Fixes closing bracket touching open bracket: (2)(3) -> (2)*(3)
+            expr = re.sub(r'\)\(', r')*(', expr)
+            # Fixes number touching a math word/constant: 2pi -> 2*pi or 2sqrt(4) -> 2*sqrt(4)
+            expr = re.sub(r'(\d)([a-z])', r'\1*\2', expr)
+
+            # Build a local dictionary where 'pi' acts as a static constant value
             local_dict = {"pi": math.pi}
             
             # Safe parsing execution context
@@ -76,8 +103,11 @@ def calculator():
 
             print(f"= {result}")
             
+            # Save final successful calculation back into the Ans buffer
+            ans_value = result
+            
         except ZeroDivisionError:
-            print("Error: Cannot divide by zero.")
+            print("Undefined")
         except NameError:
             print("Error: Unknown function or variable used.")
         except TypeError:
@@ -85,7 +115,11 @@ def calculator():
         except ValueError as e:
             print(f"Error: {e}")
         except Exception as e:
-            print(f"Error: Invalid syntax.")
+            # Check if eval blew up specifically due to a hidden division by zero in float math
+            if "division by zero" in str(e).lower():
+                print("Undefined")
+            else:
+                print(f"Error: Invalid syntax.")
 
 if __name__ == "__main__":
     calculator()
