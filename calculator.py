@@ -2,6 +2,7 @@ import math
 import cmath
 import os
 import re
+from fractions import Fraction
 
 def clear_screen():
     """Clears the terminal screen for Windows or Linux/Android."""
@@ -9,7 +10,7 @@ def clear_screen():
 
 def calculator():
     print("--- Professional Calculator ---")
-    print("Features: +, -, *, /, sqrt(x), cbrt(x), pi(n), pi, pow(x, y), percent(x, y), sin(x), cos(x), tan(x), radians(x), degrees(x)")
+    print("Features: +, -, *, /, sqrt(x), cbrt(x), pi(n), pi, pow(x, y), percent(x, y), sin(x), cos(x), tan(x), radians(x), degrees(x), log(x), ln(x)")
     print("Commands: 'ans' (last result), 'clear' (wipe screen), 'exit' (close)")
     
     # Initialize the Ans memory buffer tracker
@@ -82,7 +83,9 @@ def calculator():
         "cos": smart_cos,      
         "tan": smart_tan,      
         "radians": math.radians,
-        "degrees": math.degrees 
+        "degrees": math.degrees,
+        "log": math.log10,      # Added standard base-10 log
+        "ln": math.log          # Added natural log
     }
 
     while True:
@@ -105,6 +108,51 @@ def calculator():
 
             # --- BUFF 1: Replace 'ans' with the actual stored memory value ---
             expr = re.sub(r'\bans\b', str(ans_value), expr)
+
+            # --- EXTENSION: Intercept FR(start, end) count pattern ---
+            fr_match = re.match(r'^fr\(([^,]+),([^)]+)\)\s+(\d+)$', expr)
+            if fr_match:
+                start_expr = fr_match.group(1).strip()
+                end_expr = fr_match.group(2).strip()
+                count = int(fr_match.group(3))
+                
+                if count <= 0:
+                    print("Error: Count must be 1 or greater.")
+                    continue
+                
+                # Apply implicit multiplication injection to the inner bounds expressions
+                for _ in range(2): # Double pass for nested structures
+                    start_expr = re.sub(r'(\d)\(', r'\1*(', start_expr)
+                    start_expr = re.sub(r'\)\(', r')*(', start_expr)
+                    start_expr = re.sub(r'(\d)([a-z])', r'\1*\2', start_expr)
+                    
+                    end_expr = re.sub(r'(\d)\(', r'\1*(', end_expr)
+                    end_expr = re.sub(r'\)\(', r')*(', end_expr)
+                    end_expr = re.sub(r'(\d)([a-z])', r'\1*\2', end_expr)
+
+                local_dict = {"pi": math.pi}
+                eval_env = {**safe_dict, **local_dict}
+                
+                # Parse bounds (handles trig, logs, fractions, negatives natively)
+                start_val = float(eval(start_expr, {"__builtins__": None}, eval_env))
+                end_val = float(eval(end_expr, {"__builtins__": None}, eval_env))
+                
+                step = (end_val - start_val) / (count + 1)
+                rational_numbers = []
+                
+                for i in range(1, count + 1):
+                    current_val = start_val + (step * i)
+                    frac = Fraction(current_val).limit_denominator(1000)
+                    
+                    if frac.denominator == 1:
+                        rational_numbers.append(str(frac.numerator))
+                    else:
+                        rational_numbers.append(f"{frac.numerator}/{frac.denominator}")
+                        
+                result_str = f"[{', '.join(rational_numbers)}]"
+                print(f"= {result_str}")
+                ans_value = result_str
+                continue
 
             # Special Case: If user types just 'pi' without brackets, return raw representation
             if expr == "pi":
