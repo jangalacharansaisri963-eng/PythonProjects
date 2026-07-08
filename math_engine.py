@@ -46,22 +46,45 @@ def format_result(res):
             return int(res)
     return res
 
-def smart_sin(x):
-    res = math.sin(x)
+# --- NEW: Native Degree Trig Logic with Asymptote Safety ---
+
+def smart_sin(deg):
+    rad = math.radians(deg)
+    res = math.sin(rad)
     return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
 
-def smart_cos(x):
-    res = math.cos(x)
+def smart_cos(deg):
+    rad = math.radians(deg)
+    res = math.cos(rad)
     return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
 
-def smart_tan(x):
-    cosine = smart_cos(x)
+def smart_tan(deg):
+    cosine = smart_cos(deg)
     if cosine == 0:
-        raise ValueError("Undefined (Tangent asymptote)")
-    res = math.tan(x)
+        raise ValueError(f"Undefined (Tangent asymptote at {deg}°)")
+    rad = math.radians(deg)
+    res = math.tan(rad)
     return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
 
-# The namespace dictionary mapping string inputs to safe math entities
+def smart_sec(deg):
+    cosine = smart_cos(deg)
+    if cosine == 0:
+        raise ValueError(f"Undefined (Secant asymptote at {deg}°)")
+    return 1 / cosine
+
+def smart_csc(deg):
+    sine = smart_sin(deg)
+    if sine == 0:
+        raise ValueError(f"Undefined (Cosecant asymptote at {deg}°)")
+    return 1 / sine
+
+def smart_cot(deg):
+    sine = smart_sin(deg)
+    if sine == 0:
+        raise ValueError(f"Undefined (Cotangent asymptote at {deg}°)")
+    return smart_cos(deg) / sine
+
+# Map math entities without explicit 'radians' and 'degrees' helpers
 SAFE_DICT = {
     "sqrt": smart_sqrt,
     "cbrt": math.cbrt,      
@@ -70,9 +93,10 @@ SAFE_DICT = {
     "percent": percent,    
     "sin": smart_sin,      
     "cos": smart_cos,      
-    "tan": smart_tan,      
-    "radians": math.radians,
-    "degrees": math.degrees,
+    "tan": smart_tan,
+    "sec": smart_sec,
+    "csc": smart_csc,
+    "cot": smart_cot,      
     "log": math.log10,      
     "ln": math.log          
 }
