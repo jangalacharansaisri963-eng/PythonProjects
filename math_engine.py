@@ -46,7 +46,7 @@ def format_result(res):
             return int(res)
     return res
 
-# --- NEW: Native Degree Trig Logic with Asymptote Safety ---
+# --- Native Degree Trig Logic with Asymptote Safety ---
 
 def smart_sin(deg):
     rad = math.radians(deg)
@@ -84,7 +84,25 @@ def smart_cot(deg):
         raise ValueError(f"Undefined (Cotangent asymptote at {deg}°)")
     return smart_cos(deg) / sine
 
-# Map math entities without explicit 'radians' and 'degrees' helpers
+# --- NEW: Inverse Trig Logic (Outputs Degrees) ---
+
+def smart_arcsin(x):
+    if x < -1 or x > 1:
+        raise ValueError("Arcsin input domain must be between -1 and 1")
+    res = math.degrees(math.asin(x))
+    return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
+
+def smart_arccos(x):
+    if x < -1 or x > 1:
+        raise ValueError("Arccos input domain must be between -1 and 1")
+    res = math.degrees(math.acos(x))
+    return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
+
+def smart_arctan(x):
+    res = math.degrees(math.atan(x))
+    return 0 if math.isclose(res, 0, abs_tol=1e-15) else res
+
+# Updated safe environment registry
 SAFE_DICT = {
     "sqrt": smart_sqrt,
     "cbrt": math.cbrt,      
@@ -96,7 +114,10 @@ SAFE_DICT = {
     "tan": smart_tan,
     "sec": smart_sec,
     "csc": smart_csc,
-    "cot": smart_cot,      
+    "cot": smart_cot,
+    "arcsin": smart_arcsin,
+    "arccos": smart_arccos,
+    "arctan": smart_arctan,
     "log": math.log10,      
     "ln": math.log          
 }
