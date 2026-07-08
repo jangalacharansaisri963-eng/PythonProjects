@@ -12,7 +12,8 @@ def clear_screen():
 def calculator():
     print("--- Professional Calculator ---")
     print("Features: +, -, *, /, sqrt(x), cbrt(x), pi(n), pi, pow(x, y), percent(x, y)")
-    print("Trig (Degrees Natively): sin(x), cos(x), tan(x), sec(x), csc(x), cot(x), log(x), ln(x)")
+    print("Trig Forward (Degrees): sin(x), cos(x), tan(x), sec(x), csc(x), cot(x)")
+    print("Trig Inverse (Outputs Degrees): arcsin(x), arccos(x), arctan(x), log(x), ln(x)")
     print("Commands: 'ans' (last result), 'clear' (wipe screen), 'exit' (close)")
     
     ans_value = 0
@@ -101,4 +102,4 @@ def calculator():
 
 if __name__ == "__main__":
     calculator()
-    
+                        
