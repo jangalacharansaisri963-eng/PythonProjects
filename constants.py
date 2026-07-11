@@ -63,3 +63,32 @@ def get_pi():
 
 
 PI = get_pi()
+
+def get_e():
+
+    old = getcontext().prec
+    getcontext().prec += 5
+
+    e = Decimal(1)
+    factorial = Decimal(1)
+
+    n = 1
+
+    while True:
+
+        factorial *= n
+
+        term = Decimal(1) / factorial
+
+        if term == 0:
+            break
+
+        e += term
+
+        n += 1
+
+    getcontext().prec = old
+
+    return +e
+
+E = get_e()
