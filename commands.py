@@ -80,6 +80,39 @@ def execute(command):
 
 
     # ==========================================
+    # SCIENTIFIC CONSTANT INFO
+    # ==========================================
+
+    if lower == "c":
+
+        print("━━━━━━━━━━━━━━━━━━━━━━")
+        print("Speed of light (vacuum)")
+        print()
+        print("Approximately: 3 × 10⁸ m/s")
+        print("Precisely: 299792458 m/s")
+        print("━━━━━━━━━━━━━━━━━━━━━━")
+
+        return True
+
+
+    if lower == "phi":
+
+        print("━━━━━━━━━━━━━━━━━━━━━━")
+        print("Golden Ratio (φ)")
+        print()
+        print("Value:")
+        print("1.6180339887498948482")
+        print()
+        print("Used in:")
+        print("- Mathematics")
+        print("- Art and design")
+        print("- Architecture")
+        print("━━━━━━━━━━━━━━━━━━━━━━")
+
+        return True
+
+
+    # ==========================================
     # fr(a,b) n
     # ==========================================
 
