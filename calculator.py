@@ -1,15 +1,13 @@
 import os
 import re
-import base64
 import cmath
 import math
 from decimal import Decimal, getcontext
-from deep_translator import GoogleTranslator
 
-# --- CONFIG ---
-getcontext().prec = 105
+# --- ENGINE SETUP ---
+# Default to 15 for speed, 105 for when you add "precise"
+getcontext().prec = 15 
 
-# --- MATH ENGINE ---
 def inject_implicit_mul(expr):
     expr = re.sub(r'(\d)\(', r'\1*(', expr)
     expr = re.sub(r'\)\(', r')*(', expr)
@@ -36,7 +34,7 @@ def get_high_precision_e():
     for i in range(1, 70): fact *= Decimal(i); e += Decimal(1) / fact
     return e
 
-# --- TRIG & LOG FUNCTIONS ---
+# --- YOUR MATH SUITE ---
 def smart_sin(deg):
     x = (Decimal(deg) * get_high_precision_pi() / Decimal(180)) % (2 * get_high_precision_pi())
     result, term, num, denom, sign = Decimal(0), x, x, 1, 1
@@ -54,52 +52,62 @@ def smart_cos(deg):
     return result
 
 def smart_tan(deg): return smart_sin(deg) / smart_cos(deg)
+def smart_sqrt(x): return Decimal(x).sqrt()
+def smart_log(x): return Decimal(math.log10(float(x)))
 def smart_ln(x):
     x = Decimal(x); res = Decimal(str(cmath.log(float(x)).real)); e = get_high_precision_e()
     for _ in range(7): res = res + (x / (e ** res)) - Decimal(1)
     return res
 
-def smart_log(x): return smart_ln(x) / smart_ln(10)
-def smart_sqrt(x): return Decimal(x).sqrt()
+def find_repeating_decimal(n, d):
+    num, den = int(n), int(d)
+    integer_part = num // den
+    remainder = num % den
+    if remainder == 0: return f"{integer_part}.0"
+    decimal_part, seen = [], {}
+    while remainder != 0 and len(decimal_part) < 102:
+        if remainder in seen: break
+        seen[remainder] = len(decimal_part)
+        remainder *= 10; decimal_part.append(str(remainder // den)); remainder %= den
+    return f"{integer_part}.{''.join(decimal_part)}"
 
-# --- THE MASTER ROUTER ---
-def main():
-    print("--- Professional Quantum Terminal (Full Suite) ---")
+# --- MAIN LOOP ---
+def run_calculator():
+    print("--- High-Precision Scientific Calculator ---")
     
-    # Register full library
     MATH_LIB = {
         "sin": smart_sin, "cos": smart_cos, "tan": smart_tan,
         "pi": get_high_precision_pi(), "ln": smart_ln, "log": smart_log,
         "sqrt": smart_sqrt, "Decimal": Decimal
     }
     
-    ans = "0"
     while True:
-        try:
-            cmd = input("core@quantum_matrix:~$ ").strip()
-            if cmd.lower() in ["exit", "quit"]: break
+        cmd = input("calc:~$ ").strip()
+        if cmd.lower() in ["exit", "quit"]: break
+        if cmd.lower() in ["clear", "cls"]:
+            os.system('cls' if os.name == 'nt' else 'clear'); continue
             
-            # Precise Toggle Detection
-            is_precise = " precise" in cmd.lower()
-            cmd = cmd.replace(" precise", "").replace(" PRECISE", "").strip()
-            getcontext().prec = 105 if is_precise else 12
+        # Toggle Precision
+        is_precise = cmd.lower().endswith(" precise")
+        if is_precise:
+            getcontext().prec = 105
+            cmd = cmd.replace(" precise", "").strip()
+        else:
+            getcontext().prec = 15
 
-            # Routing
-            if "(func translate to " in cmd:
-                # [Translation Logic Remains Same]
-                pass
+        try:
+            # Handle fr(a,b) count
+            fr_match = re.match(r'fr\((\d+),(\d+)\)\s+(\d+)', cmd)
+            if fr_match:
+                n, d, count = fr_match.groups()
+                # Your specific logic for fr range goes here
+                print("Result: [Rational Sequence]")
             else:
-                expr = inject_implicit_mul(cmd)
-                result = eval(expr, {"__builtins__": None}, MATH_LIB)
-                
-                # Dynamic Output
-                if not is_precise:
-                    print(f"= {round(float(result), 10)}")
-                else:
-                    print(f"= {result}")
+                result = eval(inject_implicit_mul(cmd), {"__builtins__": None}, MATH_LIB)
+                print(f"= {result}")
         except Exception as e:
-            print(f" >> ERROR: {e}")
+            print(f"Error: {e}")
 
 if __name__ == "__main__":
-    main()
+    run_calculator()
     
