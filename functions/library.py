@@ -72,4 +72,7 @@ MATH_LIB = {
 
     "pi": constants.PI,
     "e": constants.E,
+
+    "phi": constants.PHI,
+    "c": constants.SPEED_OF_LIGHT,
 }
