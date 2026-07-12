@@ -119,7 +119,7 @@ SPEED_OF_LIGHT_APPROX = Decimal("3e8")
 def get_r15():
 
     old = getcontext().prec
-    getcontext().prec += 5
+    getcontext().prec += 10
 
     r15 = Decimal(0)
 
@@ -129,10 +129,10 @@ def get_r15():
 
         term = Decimal(1) / (Decimal(n) ** (n + 1))
 
-        if abs(term) < Decimal(10) ** (-getcontext().prec):
-            break
-
         r15 += term
+
+        if term < Decimal("1e-115"):
+            break
 
         n += 1
 
