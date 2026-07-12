@@ -58,6 +58,62 @@ def run_calculator():
             continue
 
         # ==========================
+        # HELP
+        # ==========================
+
+        if lower == "help":
+
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("Scientific Calculator Help")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print()
+            print("Trigonometry")
+            print("  sin  cos  tan")
+            print("  asin acos atan")
+            print("  sinh cosh tanh")
+            print()
+            print("Roots")
+            print("  sqrt  cbrt  root")
+            print()
+            print("Logarithms")
+            print("  ln  log")
+            print()
+            print("Integers")
+            print("  gcd")
+            print("  hcf")
+            print("  lcm")
+            print()
+            print("Factors")
+            print("  factors")
+            print("  factorization")
+            print()
+            print("Fractions")
+            print("  simplify(x)")
+            print("  simplify(16/100)")
+            print("  simplify(0.16)")
+            print("  simplify(1.23r)")
+            print("  simplify(1.2(34r))")
+            print()
+            print("Constants")
+            print("  pi")
+            print("  e")
+            print("  phi")
+            print("  c")
+            print()
+            print("Modes")
+            print("  mode degree")
+            print("  mode radian")
+            print("  <expression> precise")
+            print()
+            print("Commands")
+            print("  help")
+            print("  clear / cls")
+            print("  exit / quit")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+
+            continue
+
+        # ==========================
         # ANGLE MODES
         # ==========================
 
