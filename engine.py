@@ -20,12 +20,6 @@ def evaluate(expression, precise=False):
     else:
         getcontext().prec = constants.DEFAULT_PRECISION
 
-    constants.PI = constants.get_pi()
-    constants.E = constants.get_e()
-
-    MATH_LIB["pi"] = constants.PI
-    MATH_LIB["e"] = constants.E
-
     expression = preprocess(expression)
 
     return eval(
