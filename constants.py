@@ -33,11 +33,7 @@ def get_pi():
     old = getcontext().prec
     getcontext().prec += 10
 
-    three = Decimal(3)
-
-    last = Decimal(0)
-
-    t = three
+    t = Decimal(3)
 
     n = Decimal(1)
     na = Decimal(0)
@@ -45,7 +41,7 @@ def get_pi():
     d = Decimal(0)
     da = Decimal(24)
 
-    while t != last:
+    for _ in range(1000):
 
         last = t
 
@@ -56,6 +52,9 @@ def get_pi():
         da += 32
 
         t += n / d
+
+        if t == last:
+            break
 
     getcontext().prec = old
 
