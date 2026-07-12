@@ -40,6 +40,10 @@ from functions.factors import (
     factors,
     factorization,
 )
+from functions.integers import (
+    gcd,
+    lcm,
+)
 
 
 MATH_LIB = {
@@ -75,4 +79,7 @@ MATH_LIB = {
 
     "phi": constants.PHI,
     "c": constants.SPEED_OF_LIGHT,
+    "gcd": gcd,
+    "hcf": gcd,
+    "lcm": lcm,
 }
