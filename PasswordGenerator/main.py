@@ -7,6 +7,7 @@ Password Generator
 import re
 
 from generator import generate_password
+from clipboard import copy_password
 
 
 def banner():
@@ -119,6 +120,12 @@ def run():
                 print("Generated Password")
                 print()
                 print(password)
+
+
+                copy_password(password)
+
+                print()
+                print("Password copied to clipboard!")
                 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 
