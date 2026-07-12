@@ -155,6 +155,7 @@ def execute(command):
         print("e")
         print("phi")
         print("c")
+        print("R15")
         print("━━━━━━━━━━━━━━━━━━━━━━")
 
         return True
