@@ -97,14 +97,21 @@ E = get_e()
 
 
 # ==========================================
-# EXTRA SCIENTIFIC CONSTANTS
+# GOLDEN RATIO
 # ==========================================
 
-# Golden ratio
-PHI = Decimal("1.6180339887498948482")
+def get_phi():
+
+    return Decimal("1.6180339887498948482")
 
 
-# Speed of light in vacuum (m/s)
+PHI = get_phi()
+
+
+# ==========================================
+# SPEED OF LIGHT
+# ==========================================
+
 SPEED_OF_LIGHT = Decimal("299792458")
 SPEED_OF_LIGHT_APPROX = Decimal("3e8")
 
