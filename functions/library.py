@@ -44,6 +44,9 @@ from functions.integers import (
     gcd,
     lcm,
 )
+from functions.simplify import(
+    simplify,
+)
 
 
 MATH_LIB = {
@@ -82,4 +85,5 @@ MATH_LIB = {
     "gcd": gcd,
     "hcf": gcd,
     "lcm": lcm,
+    "simplify": simpilify,
 }
