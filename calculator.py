@@ -5,7 +5,8 @@ Main application.
 """
 
 import os
-
+import sys
+import readline
 import constants
 
 from formatter import (
@@ -27,7 +28,10 @@ def run_calculator():
     while True:
 
         try:
-            cmd = input("$ ").strip()
+            # Force prompt to show in all environments
+            sys.stdout.write("$ ")
+            sys.stdout.flush()
+            cmd = sys.stdin.readline().strip()
 
         except (KeyboardInterrupt, EOFError):
             print("\nGoodbye!")
@@ -39,15 +43,11 @@ def run_calculator():
         lower = cmd.lower()
 
         # ==========================
-        # EXIT
+        # COMMANDS (Moved to the top)
         # ==========================
 
         if lower in ("exit", "quit"):
             break
-
-        # ==========================
-        # CLEAR
-        # ==========================
 
         if lower in ("clear", "cls"):
 
@@ -56,10 +56,6 @@ def run_calculator():
             banner()
 
             continue
-
-        # ==========================
-        # HELP
-        # ==========================
 
         if lower == "help":
 
@@ -152,6 +148,7 @@ def run_calculator():
         try:
 
             if execute(cmd):
+                readline.add_history(cmd)
                 continue
 
         except Exception as ex:
@@ -175,6 +172,8 @@ def run_calculator():
                 answer,
                 precise
             )
+            
+            readline.add_history(cmd)
 
         except ZeroDivisionError:
 
@@ -196,3 +195,4 @@ def run_calculator():
 if __name__ == "__main__":
 
     run_calculator()
+        
