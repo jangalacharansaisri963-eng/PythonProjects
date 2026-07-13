@@ -47,8 +47,21 @@ from functions.integers import (
     lcm,
 )
 
-from functions.simplify import (
-    simplify,
+from functions.simplify import simplify
+
+from functions.compare import (
+    compare,
+    compare3,
+    less,
+    greater,
+    equal,
+    not_equal,
+    less_equal,
+    greater_equal,
+    AO,
+    DO,
+    greatest,
+    least,
 )
 
 
@@ -111,6 +124,28 @@ MATH_LIB = {
     # ======================================
 
     "simplify": simplify,
+
+    # ======================================
+    # Comparison
+    # ======================================
+
+    "compare": compare,
+    "compare3": compare3,
+
+    "less": less,
+    "greater": greater,
+
+    "equal": equal,
+    "not_equal": not_equal,
+
+    "less_equal": less_equal,
+    "greater_equal": greater_equal,
+
+    "AO": AO,
+    "DO": DO,
+
+    "greatest": greatest,
+    "least": least,
 
     # ======================================
     # Built-in Types
