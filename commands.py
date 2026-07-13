@@ -37,6 +37,14 @@ def execute(command):
 
         return True
 
+    if lower in ("readmind", "mind", "telepathy"):
+
+        print("ReadMind:")
+        print("I detected... absolutely nothing.")
+        print("Please type your expression.")
+
+        return True
+
 
     if lower == "coffee":
 
