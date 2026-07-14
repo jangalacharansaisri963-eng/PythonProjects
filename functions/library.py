@@ -24,6 +24,23 @@ from functions.hyperbolic import (
     tanh,
 )
 
+from functions.basic_math import (
+    square,
+    cube,
+    reciprocal,
+    lerp,
+    is_even,
+    is_odd,
+    is_prime,
+    next_prime,
+    previous_prime,
+    prime_factors,
+    factor_count,
+    digit_sum,
+    digit_product,
+    reverse_number,
+)
+
 from functions.roots import (
     sqrt,
     cbrt,
@@ -90,6 +107,30 @@ MATH_LIB = {
     "sqrt": sqrt,
     "cbrt": cbrt,
     "root": root,
+    
+    # ======================================
+    # Basic Mathematics
+    # ======================================
+
+    "square": square,
+    "cube": cube,
+    "reciprocal": reciprocal,
+    "lerp": lerp,
+
+    "is_even": is_even,
+    "is_odd": is_odd,
+
+    "is_prime": is_prime,
+    "next_prime": next_prime,
+    "previous_prime": previous_prime,
+
+    "prime_factors": prime_factors,
+    "factor_count": factor_count,
+
+    "digit_sum": digit_sum,
+    "digit_product": digit_product,
+
+    "reverse_number": reverse_number,
 
     # ======================================
     # Logarithms
