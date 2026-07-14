@@ -12,6 +12,7 @@ from parser import preprocess
 
 from functions.library import MATH_LIB
 from functions.first_degree_equation import solve
+from functions.simplify import simplify
 
 
 def evaluate(expression, precise=False):
@@ -26,6 +27,15 @@ def evaluate(expression, precise=False):
         return solve(expression)
 
     expression = preprocess(expression)
+
+    # Handle symbolic simplification separately
+    if (
+        expression.startswith("simplify(")
+        and expression.endswith(")")
+    ):
+        return simplify(
+            expression[9:-1]
+        )
 
     return eval(
         expression,
