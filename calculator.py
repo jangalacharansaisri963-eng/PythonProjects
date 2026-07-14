@@ -20,6 +20,8 @@ from commands import execute
 
 from engine import evaluate
 
+from functions.help_command import show_help
+
 
 def run_calculator():
     # Attempt to print banner, but don't let it crash the whole program
@@ -69,67 +71,7 @@ def run_calculator():
 
         if lower == "help":
 
-            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-            print("Scientific Calculator Help")
-            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-            print()
-            print("Trigonometry")
-            print("  sin  cos  tan")
-            print("  asin acos atan")
-            print("  sinh cosh tanh")
-            print()
-            print("Roots")
-            print("  sqrt  cbrt  root")
-            print()
-            print("Logarithms")
-            print("  ln  log")
-            print()
-            print("Integers")
-            print("  gcd")
-            print("  hcf")
-            print("  lcm")
-            print()
-            print("Factors")
-            print("  factors")
-            print("  factorization")
-            print()
-            print("Fractions")
-            print("  simplify(x)")
-            print("  simplify(16/100)")
-            print("  simplify(0.16)")
-            print("  simplify(1.23r)")
-            print("  simplify(1.2(34r))")
-            print()
-            print("Constants")
-            print("  pi")
-            print("  e")
-            print("  phi")
-            print("  c")
-            print()
-            print()
-            print("Comparison")
-            print("  compare(a,b)")
-            print("  compare3(a,b)")
-            print("  less(...)")
-            print("  greater(...)")
-            print("  equal(...)")
-            print("  not_equal(...)")
-            print("  less_equal(...)")
-            print("  greater_equal(...)")
-            print("  AO(...)")
-            print("  DO(...)")
-            print("  greatest(...)")
-            print("  least(...)")
-            print("Modes")
-            print("  mode degree")
-            print("  mode radian")
-            print("  <expression> precise")
-            print()
-            print("Commands")
-            print("  help")
-            print("  clear / cls")
-            print("  exit / quit")
-            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            show_help()
 
             continue
 
@@ -196,7 +138,7 @@ def run_calculator():
                 answer,
                 precise
             )
-            
+
             readline.add_history(cmd)
 
         except ZeroDivisionError:
