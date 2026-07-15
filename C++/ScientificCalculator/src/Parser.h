@@ -5,19 +5,19 @@
 #include <vector>
 
 
-using namespace std;
-
-
 class Parser
 {
 
 private:
 
-    vector<string> tokens;
+    std::vector<std::string> tokens;
 
-    size_t position = 0;
+    std::size_t position = 0;
 
 
+    // =======================
+    // Grammar
+    // =======================
 
     double parseExpression();
 
@@ -30,18 +30,30 @@ private:
     double parsePrimary();
 
 
+    // =======================
+    // Helpers
+    // =======================
+
+    bool isAtEnd() const;
+
+    std::string peek() const;
+
+    std::string advance();
+
+    bool match(
+        const std::string& token
+    );
+
+
 
 public:
 
     Parser(
-        vector<string> t
+        const std::vector<std::string>& tokens
     );
-
 
     double evaluate();
 
 };
-
-
 
 #endif
