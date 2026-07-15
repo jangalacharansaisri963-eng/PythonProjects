@@ -1,0 +1,31 @@
+name: Build Scientific Calculator
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++
+
+      - name: Build
+        run: |
+          g++ \
+            C++/ScientificCalculator/src/main.cpp \
+            C++/ScientificCalculator/src/Parser.cpp \
+            C++/ScientificCalculator/src/Tokenizer.cpp \
+            C++/ScientificCalculator/src/MathLibrary.cpp \
+            -std=c++17 \
+            -Wall \
+            -Wextra \
+            -pedantic \
+            -o calculator
