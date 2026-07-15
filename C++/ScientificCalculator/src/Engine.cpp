@@ -4,9 +4,8 @@
 #include "Tokenizer.h"
 #include "Parser.h"
 
-#include <vector>
 #include <string>
-
+#include <vector>
 
 using namespace std;
 
@@ -48,10 +47,13 @@ double Engine::evaluate(
     initialize();
 
 
+    Tokenizer tokenizer(
+        expression
+    );
+
+
     vector<string> tokens =
-        tokenize(
-            expression
-        );
+        tokenizer.tokenize();
 
 
     Parser parser(
