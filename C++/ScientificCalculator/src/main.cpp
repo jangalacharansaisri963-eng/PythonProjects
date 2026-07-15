@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string>
 
-#include "Parser.h"
-#include "Tokenizer.h"
-
+#include "Engine.h"
 
 using namespace std;
 
@@ -47,20 +45,16 @@ int main()
         try
         {
 
-            vector<string> tokens =
-                tokenize(expression);
-
-
-            Parser parser(tokens);
-
-
             double result =
-                parser.evaluate();
+                Engine::evaluate(
+                    expression
+                );
 
 
-            cout << "= "
-                 << result
-                 << "\n";
+            cout
+                << "= "
+                << result
+                << "\n";
 
         }
 
@@ -68,9 +62,10 @@ int main()
         catch(exception &e)
         {
 
-            cout << "Error: "
-                 << e.what()
-                 << "\n";
+            cout
+                << "Error: "
+                << e.what()
+                << "\n";
 
         }
 
@@ -78,4 +73,5 @@ int main()
 
 
     return 0;
+
 }
