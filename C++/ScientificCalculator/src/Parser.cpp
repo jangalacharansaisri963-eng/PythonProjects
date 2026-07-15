@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-#include "MathLibrary.h"
+#include "FunctionLibrary.h"
 #include "Constants.h"
 
 #include <cmath>
@@ -329,11 +329,11 @@ double Parser::parsePrimary()
     // =======================
 
     if(token == "pi")
-        return PI;
+        return Constants::PI;
 
 
     if(token == "e")
-        return E;
+        return Constants::E;
 
 
 
@@ -342,7 +342,7 @@ double Parser::parsePrimary()
     // =======================
 
     if(
-        MATH_LIB.count(token)
+        if(FunctionLibrary::exists(token))
     )
     {
 
@@ -420,7 +420,10 @@ double Parser::parsePrimary()
 
 
 
-        return MATH_LIB[token](args);
+        return FunctionLibrary::call(
+            token,
+            args
+);
 
     }
 
