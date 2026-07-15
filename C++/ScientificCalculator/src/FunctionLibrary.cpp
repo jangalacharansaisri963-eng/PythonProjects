@@ -1,7 +1,16 @@
 #include "FunctionLibrary.h"
 
-#include <stdexcept>
+#include "functions/Arithmetic.h"
+#include "functions/Roots.h"
+#include "functions/Powers.h"
+#include "functions/Trigonometry.h"
+#include "functions/Hyperbolic.h"
+#include "functions/Logarithms.h"
+#include "functions/Factorial.h"
+#include "functions/Random.h"
+#include "functions/Memory.h"
 
+#include <stdexcept>
 
 using namespace std;
 
@@ -96,20 +105,22 @@ void FunctionLibrary::initialize()
     FUNCTIONS.clear();
 
 
-    // ==================================
-    // Built-in functions register here.
-    //
-    // Example later:
-    //
-    // Roots::registerFunctions();
-    // Trigonometry::registerFunctions();
-    // Logarithms::registerFunctions();
-    // Powers::registerFunctions();
-    // Factorial::registerFunctions();
-    // Random::registerFunctions();
-    // Memory::registerFunctions();
-    //
-    // Every module registers itself.
-    // ==================================
+    Arithmetic::registerFunctions();
+
+    Roots::registerFunctions();
+
+    Powers::registerFunctions();
+
+    Trigonometry::registerFunctions();
+
+    Hyperbolic::registerFunctions();
+
+    Logarithms::registerFunctions();
+
+    Factorial::registerFunctions();
+
+    Random::registerFunctions();
+
+    Memory::registerFunctions();
 
 }
