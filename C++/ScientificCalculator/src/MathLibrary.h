@@ -6,6 +6,8 @@
 #include <map>
 #include <functional>
 
+using namespace std;
+
 
 // Function type:
 // Allows both single and multi argument functions
