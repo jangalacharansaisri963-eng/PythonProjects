@@ -176,51 +176,113 @@ public class Parser {
 
 
     // ==========================
-    // Numbers + Brackets
+// Numbers + Brackets + Functions
+// ==========================
+
+private double parseFactor() {
+
+
+    String token =
+            tokens.get(position++);
+
+
+
+    // ==========================
+    // Function
     // ==========================
 
-    private double parseFactor() {
+    if (
+        FunctionLibrary.exists(token)
+    ) {
 
 
-        String token =
-                tokens.get(position++);
+        if (
+            position >= tokens.size()
+            ||
+            !tokens.get(position).equals("(")
+        ) {
 
+            throw new RuntimeException(
+                "Expected ( after function"
+            );
 
-
-        // Brackets
-
-        if (token.equals("(")) {
-
-
-            double value =
-                    parseExpression();
-
-
-
-            if (
-                position >= tokens.size()
-                ||
-                !tokens.get(position).equals(")")
-            ) {
-
-                throw new RuntimeException(
-                    "Missing )"
-                );
-            }
-
-
-            position++;
-
-
-            return value;
         }
 
 
+        position++;
 
-        // Number
 
-        return Double.parseDouble(token);
+        double argument =
+                parseExpression();
+
+
+
+        if (
+            position >= tokens.size()
+            ||
+            !tokens.get(position).equals(")")
+        ) {
+
+            throw new RuntimeException(
+                "Missing ) after function"
+            );
+
+        }
+
+
+        position++;
+
+
+        return FunctionLibrary.call(
+            token,
+            argument
+        );
 
     }
+
+
+
+
+    // ==========================
+    // Brackets
+    // ==========================
+
+    if (
+        token.equals("(")
+    ) {
+
+
+        double value =
+                parseExpression();
+
+
+
+        if (
+            position >= tokens.size()
+            ||
+            !tokens.get(position).equals(")")
+        ) {
+
+            throw new RuntimeException(
+                "Missing )"
+            );
+
+        }
+
+
+        position++;
+
+
+        return value;
+
+    }
+
+
+
+    // ==========================
+    // Number
+    // ==========================
+
+    return Double.parseDouble(token);
 
 }
