@@ -38,11 +38,11 @@ jobs:
 
       - name: Create JAR
         run: |
-          jar cfe ScientificCalculator.jar Main -C build .
+          jar cfe ArthematicCalculator.jar Main -C build .
 
 
       - name: Upload Calculator JAR
         uses: actions/upload-artifact@v4
         with:
-          name: ScientificCalculator-Java
+          name: ArthematicCalculator-Java
           path: ArthematicCalculator.jar
