@@ -3,6 +3,7 @@ package parser;
 import java.util.List;
 
 import functions.Arithmetic;
+import library.FunctionLibrary;
 
 
 public class Parser {
