@@ -68,29 +68,43 @@ def convert_recurring(expr):
 def inject_implicit_mul(expr):
 
     expr = expr.replace("^", "**")
-    
-# ======================================
-# Complex Numbers
-# ======================================
 
-# Allow textbook notation using i.
+    # ======================================
+    # Binomial Expansion
+    # ======================================
 
-expr = re.sub(
-    r"(\d+)i\b",
-    r"\1j",
-    expr,
-)
+    expr = re.sub(
+        r"\(\s*a\s*\+\s*b\s*\)\s*\*\*\s*(\d+)",
+        r"expand_plus(\1)",
+        expr,
+    )
 
-expr = re.sub(
-    r"(?<![A-Za-z0-9_])i\b",
-    "1j",
-    expr,
-)
+    expr = re.sub(
+        r"\(\s*a\s*-\s*b\s*\)\s*\*\*\s*(\d+)",
+        r"expand_minus(\1)",
+        expr,
+    )
 
-    # Allow x/X as multiplication
+    # ======================================
+    # Complex Numbers
+    # ======================================
+
+    # Allow textbook notation using i.
+
+    expr = re.sub(
+        r"(\d+)i\b",
+        r"\1j",
+        expr,
+    )
+
+    expr = re.sub(
+        r"(?<![A-Za-z0-9_])i\b",
+        "1j",
+        expr,
+    )
+
+    # Allow × as multiplication
     expr = expr.replace("×", "*")
-    expr = expr.replace("x", "*")
-    expr = expr.replace("X", "*")
 
     expr = re.sub(r"(\d)\(", r"\1*(", expr)
     expr = re.sub(r"\)\(", r")*(", expr)
@@ -101,8 +115,7 @@ expr = re.sub(
     expr = re.sub(r"(\d)([a-zA-Z])", r"\1*\2", expr)
 
     return expr
-
-
+    
 def preprocess(expr):
 
     expr = convert_recurring(expr)
