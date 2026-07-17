@@ -29,6 +29,12 @@ from functions.complex_numbers import (
     cis,
 )
 
+from functions.binomial import (
+    expand_plus,
+    expand_minus,
+    pascal_row,
+)
+
 from functions.hyperbolic import (
     sinh,
     cosh,
@@ -194,6 +200,15 @@ MATH_LIB = {
     "gcd": gcd,
     "hcf": gcd,
     "lcm": lcm,
+
+    # ======================================
+    # Binomial Expansion
+    # ======================================
+
+    "expand_plus": expand_plus,
+    "expand_minus": expand_minus,
+
+    "pascal_row": pascal_row,
 
     # ======================================
     # Fractions
