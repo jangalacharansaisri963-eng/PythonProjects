@@ -8,34 +8,70 @@ on:
 
   workflow_dispatch:
 
+
 jobs:
   build:
 
     runs-on: windows-latest
+
 
     steps:
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+
+
       - name: Install dependencies
+        shell: pwsh
         run: |
-          python -m pip install --upgrade pip
-          if (Test-Path requirements.txt) { pip install -r requirements.txt }
+          if (Test-Path Python/ScientificCalculator/requirements.txt) {
+              pip install -r Python/ScientificCalculator/requirements.txt
+          }
+
           pip install pyinstaller
+
+
+
+      - name: Clean previous builds
+        shell: pwsh
+        run: |
+          if (Test-Path build) {
+              Remove-Item -Recurse -Force build
+          }
+
+          if (Test-Path dist) {
+              Remove-Item -Recurse -Force dist
+          }
+
+
 
       - name: Build EXE
         run: |
-          pyinstaller --noconfirm --onefile --name ScientificCalculator calculator.py
+          pyinstaller `
+            --noconfirm `
+            --clean `
+            --onefile `
+            --name ScientificCalculator `
+            Python/ScientificCalculator/calculator.py
+
+
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
-          name: ScientificCalculator
+          name: ScientificCalculator-Windows
           path: dist/ScientificCalculator.exe
           retention-days: 90
