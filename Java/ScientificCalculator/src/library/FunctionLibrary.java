@@ -29,8 +29,8 @@ public class FunctionLibrary {
     // Function Registry
     // =========================================
 
-    private static final Map<String, CalculatorFunction> FUNCTIONS =
-            new HashMap<>();
+    public static final Map<String, Function<Double, Double>> FUNCTIONS =
+        new HashMap<>();
 
     // =========================================
     // Initialize
