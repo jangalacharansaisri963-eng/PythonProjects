@@ -6,7 +6,11 @@ Main application.
 
 import os
 import sys
-import readline
+# Safe import: readline may not be available on Windows
+try:
+    import readline
+except Exception:
+    readline = None
 import constants
 
 from formatter import (
@@ -114,7 +118,8 @@ def run_calculator():
         try:
 
             if execute(cmd):
-                readline.add_history(cmd)
+                if readline:
+                    readline.add_history(cmd)
                 continue
 
         except Exception as ex:
@@ -139,7 +144,8 @@ def run_calculator():
                 precise
             )
 
-            readline.add_history(cmd)
+            if readline:
+                readline.add_history(cmd)
 
         except ZeroDivisionError:
 
@@ -161,4 +167,3 @@ def run_calculator():
 if __name__ == "__main__":
 
     run_calculator()
-    
