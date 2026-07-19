@@ -7,7 +7,7 @@ import java.util.Map;
 /*
  * FunctionLibrary
  *
- * Main registry for all calculator functions.
+ * Main registry for all calculator functions and constants.
  */
 
 public class FunctionLibrary {
@@ -31,12 +31,21 @@ public class FunctionLibrary {
             new HashMap<>();
 
     // =========================================
+    // Constant Registry
+    // =========================================
+
+    public static final Map<String, Double> CONSTANTS =
+            new HashMap<>();
+
+    // =========================================
     // Initialize
     // =========================================
 
     public static void initialize() {
 
         FUNCTIONS.clear();
+
+        CONSTANTS.clear();
 
         BasicFunctionLibrary.register();
 
@@ -65,6 +74,22 @@ public class FunctionLibrary {
     }
 
     // =========================================
+    // Register Constant
+    // =========================================
+
+    public static void registerConstant(
+            String name,
+            double value
+    ) {
+
+        CONSTANTS.put(
+                name.toLowerCase(),
+                value
+        );
+
+    }
+
+    // =========================================
     // Function Exists
     // =========================================
 
@@ -73,6 +98,20 @@ public class FunctionLibrary {
     ) {
 
         return FUNCTIONS.containsKey(
+                name.toLowerCase()
+        );
+
+    }
+
+    // =========================================
+    // Constant Exists
+    // =========================================
+
+    public static boolean constantExists(
+            String name
+    ) {
+
+        return CONSTANTS.containsKey(
                 name.toLowerCase()
         );
 
@@ -101,6 +140,31 @@ public class FunctionLibrary {
         }
 
         return function.apply(arguments);
+
+    }
+
+    // =========================================
+    // Get Constant
+    // =========================================
+
+    public static double constant(
+            String name
+    ) {
+
+        Double value =
+                CONSTANTS.get(
+                        name.toLowerCase()
+                );
+
+        if (value == null) {
+
+            throw new RuntimeException(
+                    "Unknown constant: " + name
+            );
+
+        }
+
+        return value;
 
     }
 
