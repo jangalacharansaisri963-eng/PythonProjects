@@ -4,11 +4,11 @@ formatter.py
 Terminal output.
 """
 
-LINE = "━━━━━━━━━━━━━━━━━━━━━━"
+# Changed to standard dashes to prevent the '????' character error
+LINE = "--------------------------------------"
 
 
 def banner():
-
     print("===================================")
     print(" High Precision Scientific Calculator")
     print("===================================")
@@ -22,13 +22,8 @@ def banner():
 
 
 def result(value, precise=False):
-
-    print()
-    print(LINE)
-    print("Result")
-    print(LINE)
-
-    print(value)
+    # This prints your requested format: Result: $ [value]
+    print(f"Result: $ {value}")
 
     if precise:
         print("(Precise Mode)")
@@ -38,10 +33,9 @@ def result(value, precise=False):
 
 
 def error(message):
-
     print(f"Error: {message}")
 
 
 def success(message):
-
     print(f">> {message}")
+    
