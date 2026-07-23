@@ -4,7 +4,7 @@ first_degree_equation.py
 Solves single-variable equations.
 
 Supported:
-- Exactly one variable: a
+- Exactly one variable
 - Exactly one '='
 - +  -  *  /
 - Parentheses
@@ -23,30 +23,35 @@ a/5 = 8
 
 from decimal import Decimal
 
+from equation_parser import (
+    parse_equation
+)
+
 
 def solve(expression):
     """
-    Solve an equation in one variable 'a'.
+    Solve an equation in one variable.
 
     Returns:
         Decimal solution.
     """
 
-    if expression.count("=") != 1:
-        raise ValueError(
-            "Equation must contain exactly one '='."
-        )
+    left, right, variable = parse_equation(
+        expression
+    )
 
-    left, right = expression.split("=")
-
-    def f(a):
+    def f(value):
 
         scope = {
             "__builtins__": None,
-            "a": Decimal(str(a))
+            variable: Decimal(str(value))
         }
 
-        return eval(left, scope) - eval(right, scope)
+        return (
+            eval(left, scope)
+            -
+            eval(right, scope)
+        )
 
     # -----------------------------
     # Search for a sign change
@@ -55,7 +60,12 @@ def solve(expression):
     x = Decimal("-100000")
     step = Decimal("1")
 
-    previous = f(x)
+    previous = None
+
+    try:
+        previous = f(x)
+    except Exception:
+        pass
 
     while x <= Decimal("100000"):
 
@@ -63,6 +73,7 @@ def solve(expression):
 
         try:
             current = f(x2)
+
         except Exception:
             x = x2
             previous = None
@@ -85,7 +96,9 @@ def solve(expression):
 
                 for _ in range(120):
 
-                    mid = (low + high) / 2
+                    mid = (
+                        low + high
+                    ) / 2
 
                     value = f(mid)
 
@@ -97,9 +110,13 @@ def solve(expression):
                     else:
                         low = mid
 
-                return (low + high) / 2
+                return (
+                    low + high
+                ) / 2
 
         previous = current
         x = x2
 
-    raise ValueError("No real solution found.")
+    raise ValueError(
+        "No real solution found."
+    )
