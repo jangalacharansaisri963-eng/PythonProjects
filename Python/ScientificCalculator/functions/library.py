@@ -81,7 +81,15 @@ from functions.logarithms import (
     log,
 )
 
-from functions.factorial import factorial
+from functions.factorial import (
+    factorial,
+    doublefactorial,
+    superfactorial,
+    hyperfactorial,
+    primefactorial,
+    risingfactorial,
+    fallingfactorial,
+)
 
 from functions.factors import (
     factors,
@@ -209,6 +217,13 @@ MATH_LIB = {
     # ======================================
 
     "factorial": factorial,
+    "factorial": factorial,
+    "doublefactorial": doublefactorial,
+    "superfactorial": superfactorial,
+    "hyperfactorial": hyperfactorial,
+    "primefactorial": primefactorial,
+    "risingfactorial": risingfactorial,
+    "fallingfactorial": fallingfactorial,
 
     # ======================================
     # Factors
