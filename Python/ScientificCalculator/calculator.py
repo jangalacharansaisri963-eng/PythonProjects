@@ -97,14 +97,6 @@ def run_calculator():
             continue
 
         # ==========================
-        # HELP
-        # ==========================
-
-        if lower == "help":
-            show_help()
-            continue
-
-        # ==========================
         # ANGLE MODES
         # ==========================
 
