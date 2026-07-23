@@ -62,6 +62,8 @@ from functions.roots import (
     sqrt,
     cbrt,
     root,
+    sqrtrem,
+    cbrtrem,
 )
 
 from functions.logarithms import (
@@ -124,6 +126,8 @@ MATH_LIB = {
     "sqrt": sqrt,
     "cbrt": cbrt,
     "root": root,
+    "sqrtrem": sqrtrem,
+    "cbrtrem": cbrtrem,
 
     # ======================================
     # Complex Numbers
