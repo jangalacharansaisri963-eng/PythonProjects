@@ -37,8 +37,18 @@ def evaluate(expression, precise=False):
             expression[9:-1]
         )
 
-    return eval(
+    result = eval(
         expression,
         {"__builtins__": None},
         MATH_LIB,
     )
+
+    # Clean floating-point noise in complex numbers
+    if isinstance(result, complex):
+
+        real = 0 if abs(result.real) < 1e-12 else result.real
+        imag = 0 if abs(result.imag) < 1e-12 else result.imag
+
+        result = complex(real, imag)
+
+    return result
