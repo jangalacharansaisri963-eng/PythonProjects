@@ -26,7 +26,6 @@ from formatter import (
 
 from commands import execute, set_answer
 from engine import evaluate
-from functions.help_command import show_help
 
 
 LOG_FILE = "latestlog.txt"
