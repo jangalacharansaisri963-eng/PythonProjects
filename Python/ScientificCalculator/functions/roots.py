@@ -42,3 +42,26 @@ def sqrtrem(x):
     remainder = value - (root * root)
 
     return f"{root} remainder {remainder}"
+
+
+def cbrtrem(x):
+    """
+    Integer cube root and remainder.
+
+    cbrtrem(30)
+    -> 3 remainder 3
+    """
+
+    value = int(x)
+
+    root = int(round(value ** (1 / 3)))
+
+    while (root + 1) ** 3 <= value:
+        root += 1
+
+    while root ** 3 > value:
+        root -= 1
+
+    remainder = value - (root ** 3)
+
+    return f"{root} remainder {remainder}"
