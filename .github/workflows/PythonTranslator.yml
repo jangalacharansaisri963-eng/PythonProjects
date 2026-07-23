@@ -1,0 +1,44 @@
+name: Build Translator
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    # This automatically runs all commands inside your subfolder
+    defaults:
+      run:
+        working-directory: Python/Translator
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          if (Test-Path requirements.txt) { pip install -r requirements.txt } else { pip install deep-translator pyperclip }
+
+      - name: Build Executable
+        run: pyinstaller --onefile --console --noconfirm --name Translator --collect-all deep_translator translator.py
+
+      # Because of working-directory above, dist/Translator.exe is right here relative to the folder!
+      - name: Upload Executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: PythonTranslator
+          path: Python/Translator/dist/Translator.exe
+          if-no-files-found: error
+          retention-days: 90
+          
