@@ -5,6 +5,7 @@ Root functions.
 """
 
 from decimal import Decimal
+import math
 
 
 def sqrt(x):
@@ -24,3 +25,20 @@ def root(n, x):
     """
 
     return Decimal(str(x)) ** (Decimal(1) / Decimal(n))
+
+
+def sqrtrem(x):
+    """
+    Integer square root and remainder.
+
+    sqrtrem(26)
+    -> 5 remainder 1
+    """
+
+    value = int(x)
+
+    root = math.isqrt(value)
+
+    remainder = value - (root * root)
+
+    return f"{root} remainder {remainder}"
