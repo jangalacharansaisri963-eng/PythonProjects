@@ -6,8 +6,6 @@ Simplifies numeric values and expressions.
 
 from fractions import Fraction
 
-from functions.library import MATH_LIB
-
 
 def repeating_decimal(value):
     """
@@ -49,21 +47,7 @@ def repeating_decimal(value):
 
 def simplify(value):
     """
-    Simplify numbers and evaluate expressions.
-
-    Examples:
-
-    simplify("1/2+2/5")
-    -> 9/10
-
-    simplify("sqrt(25)")
-    -> 5
-
-    simplify("factorial(5)")
-    -> 120
-
-    simplify("0.(3)")
-    -> 1/3
+    Simplify numbers and expressions.
     """
 
     # Fraction
@@ -82,7 +66,7 @@ def simplify(value):
         ).limit_denominator()
 
         if fraction.denominator == 1:
-            return fraction.numerator
+            return fraction.numerator()
 
         return fraction
 
@@ -118,21 +102,20 @@ def simplify(value):
         return repeat
 
     # Evaluate expressions
-    scope = {
-        "__builtins__": None,
-    }
-
-    scope.update(MATH_LIB)
-
     try:
+
+        from functions.library import MATH_LIB
+
+        scope = {
+            "__builtins__": None,
+        }
+
+        scope.update(MATH_LIB)
 
         result = eval(
             value,
             scope
         )
-
-        if result == value:
-            return result
 
         return simplify(result)
 
